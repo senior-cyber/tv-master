@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
 @SpringBootApplication(exclude = {LiquibaseAutoConfiguration.class})
-@EntityScan("com.senior.cyber.frmk.tv.dao.entity")
+@EntityScan("com.senior.cyber.tv.dao.entity")
 @EnableJdbcHttpSession(tableName = "TBL_SESSION")
 public class BootApplication {
 
