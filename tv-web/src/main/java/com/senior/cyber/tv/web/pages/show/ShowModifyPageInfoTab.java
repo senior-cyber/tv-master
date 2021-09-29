@@ -1,11 +1,5 @@
 package com.senior.cyber.tv.web.pages.show;
 
-import com.senior.cyber.tv.dao.entity.Channel;
-import com.senior.cyber.tv.dao.entity.Show;
-import com.senior.cyber.tv.web.data.SingleChoiceProvider;
-import com.senior.cyber.tv.web.pages.DashboardPage;
-import com.senior.cyber.tv.web.repository.ChannelRepository;
-import com.senior.cyber.tv.web.repository.ShowRepository;
 import com.senior.cyber.frmk.common.base.WicketFactory;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.LongConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.StringConvertor;
@@ -20,6 +14,12 @@ import com.senior.cyber.frmk.common.wicket.markup.html.form.TimeTextField;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.select2.Option;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.select2.Select2SingleChoice;
 import com.senior.cyber.frmk.common.wicket.markup.html.panel.ContainerFeedbackBehavior;
+import com.senior.cyber.tv.dao.entity.Channel;
+import com.senior.cyber.tv.dao.entity.Show;
+import com.senior.cyber.tv.web.data.SingleChoiceProvider;
+import com.senior.cyber.tv.web.pages.DashboardPage;
+import com.senior.cyber.tv.web.repository.ChannelRepository;
+import com.senior.cyber.tv.web.repository.ShowRepository;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
@@ -76,6 +76,7 @@ public class ShowModifyPageInfoTab extends ContentPanel {
     protected Integer duration_value;
 
     protected Button saveButton;
+    protected Button saveNewButton;
     protected Button deleteButton;
     protected BookmarkablePageLink<Void> cancelButton;
 
@@ -173,6 +174,14 @@ public class ShowModifyPageInfoTab extends ContentPanel {
         };
         this.form.add(this.saveButton);
 
+        this.saveNewButton = new Button("saveNewButton") {
+            @Override
+            public void onSubmit() {
+                saveNewButtonClick();
+            }
+        };
+        this.form.add(this.saveNewButton);
+
         this.deleteButton = new Button("deleteButton") {
             @Override
             public void onSubmit() {
@@ -185,7 +194,7 @@ public class ShowModifyPageInfoTab extends ContentPanel {
         this.form.add(this.cancelButton);
     }
 
-    protected void saveButtonClick() {
+    protected void saveNewButtonClick() {
         ApplicationContext context = WicketFactory.getApplicationContext();
         ChannelRepository channelRepository = context.getBean(ChannelRepository.class);
 
@@ -201,6 +210,28 @@ public class ShowModifyPageInfoTab extends ContentPanel {
         show.setSchedule(this.schedule_value);
         show.setStartAt(this.start_at_value);
         show.setDuration(this.duration_value);
+
+        showRepository.save(show);
+
+        setResponsePage(DashboardPage.class);
+    }
+
+    protected void saveButtonClick() {
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        ChannelRepository channelRepository = context.getBean(ChannelRepository.class);
+
+        Optional<Channel> optionalChannel = channelRepository.findById(Long.valueOf(this.channel_value.getId()));
+        Channel channel = optionalChannel.orElseThrow(() -> new WicketRuntimeException("channel is not found"));
+
+        ShowRepository showRepository = context.getBean(ShowRepository.class);
+
+        Show show = new Show();
+        show.setChannel(channel);
+        show.setName(this.name_value);
+        show.setSchedule(this.schedule_value);
+        show.setStartAt(this.start_at_value);
+        show.setDuration(this.duration_value);
+
 
         showRepository.save(show);
 
