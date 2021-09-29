@@ -171,7 +171,6 @@ public class ShowModifyPageInfoTab extends ContentPanel {
             }
         };
         this.form.add(this.saveButton);
-
         this.saveNewButton = new Button("saveNewButton") {
             @Override
             public void onSubmit() {
@@ -201,8 +200,7 @@ public class ShowModifyPageInfoTab extends ContentPanel {
 
         ShowRepository showRepository = context.getBean(ShowRepository.class);
 
-        Optional<Show> optionalShow = showRepository.findById(this.uuid);
-        Show show = optionalShow.orElseThrow(() -> new WicketRuntimeException("show is not found"));
+        Show show = new Show();
         show.setChannel(channel);
         show.setName(this.name_value);
         show.setSchedule(this.schedule_value);
@@ -211,7 +209,7 @@ public class ShowModifyPageInfoTab extends ContentPanel {
 
         showRepository.save(show);
 
-        setResponsePage(DashboardPage.class);
+        ((MasterPage) getPage()).setMessage("Saved " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
     }
 
     protected void saveButtonClick() {
@@ -223,7 +221,8 @@ public class ShowModifyPageInfoTab extends ContentPanel {
 
         ShowRepository showRepository = context.getBean(ShowRepository.class);
 
-        Show show = new Show();
+        Optional<Show> optionalShow = showRepository.findById(this.uuid);
+        Show show = optionalShow.orElseThrow(() -> new WicketRuntimeException("show is not found"));
         show.setChannel(channel);
         show.setName(this.name_value);
         show.setSchedule(this.schedule_value);
@@ -231,7 +230,8 @@ public class ShowModifyPageInfoTab extends ContentPanel {
         show.setDuration(this.duration_value);
 
         showRepository.save(show);
-        ((MasterPage) getPage()).setMessage("Saved " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
+
+        setResponsePage(DashboardPage.class);
     }
 
     protected void deleteButtonClick() {

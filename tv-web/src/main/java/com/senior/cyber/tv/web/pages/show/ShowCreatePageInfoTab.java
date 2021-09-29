@@ -1,5 +1,6 @@
 package com.senior.cyber.tv.web.pages.show;
 
+import com.senior.cyber.frmk.common.wicket.layout.*;
 import com.senior.cyber.tv.dao.entity.Channel;
 import com.senior.cyber.tv.dao.entity.Show;
 import com.senior.cyber.tv.web.data.SingleChoiceProvider;
@@ -11,10 +12,6 @@ import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.StringConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.tabs.ContentPanel;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.tabs.Tab;
-import com.senior.cyber.frmk.common.wicket.layout.Size;
-import com.senior.cyber.frmk.common.wicket.layout.UIColumn;
-import com.senior.cyber.frmk.common.wicket.layout.UIContainer;
-import com.senior.cyber.frmk.common.wicket.layout.UIRow;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.DateTextField;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.TimeTextField;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.select2.Option;
@@ -80,6 +77,7 @@ public class ShowCreatePageInfoTab extends ContentPanel {
     protected Integer duration_value;
 
     protected Button saveButton;
+    protected Button saveNewButton;
     protected BookmarkablePageLink<Void> cancelButton;
 
     public ShowCreatePageInfoTab(String id, String name, TabbedPanel<Tab> containerPanel, Map<String, Object> data) {
@@ -174,9 +172,36 @@ public class ShowCreatePageInfoTab extends ContentPanel {
             }
         };
         this.form.add(this.saveButton);
+        this.saveNewButton = new Button("saveNewButton") {
+            @Override
+            public void onSubmit() {
+                saveNewButtonClick();
+            }
+        };
 
         this.cancelButton = new BookmarkablePageLink<>("cancelButton", DashboardPage.class);
         this.form.add(this.cancelButton);
+    }
+
+    protected void saveNewButtonClick() {
+        ApplicationContext context = WicketFactory.getApplicationContext();
+        ChannelRepository channelRepository = context.getBean(ChannelRepository.class);
+
+        Optional<Channel> optionalChannel = channelRepository.findById(Long.valueOf(this.channel_value.getId()));
+        Channel channel = optionalChannel.orElseThrow(() -> new WicketRuntimeException("channel is not found"));
+
+        ShowRepository showRepository = context.getBean(ShowRepository.class);
+
+        Show show = new Show();
+        show.setChannel(channel);
+        show.setName(this.name_value);
+        show.setSchedule(this.schedule_value);
+        show.setStartAt(this.start_at_value);
+        show.setDuration(this.duration_value);
+
+        showRepository.save(show);
+
+        ((MasterPage) getPage()).setMessage("Saved " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
     }
 
     protected void saveButtonClick() {
