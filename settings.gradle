@@ -1,0 +1,8 @@
+rootProject.name = 'tv-master'
+
+include(
+        ":tv-dao",
+        ":tv-web"
+)
+project(":tv-dao").projectDir = file("./tv-dao")
+project(":tv-web").projectDir = file("./tv-web")

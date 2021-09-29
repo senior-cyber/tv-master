@@ -1,0 +1,47 @@
+plugins {
+    id 'org.springframework.boot' version "${spring_boot}"
+    id 'io.spring.dependency-management' version "${spring_dependency_management}"
+    id 'java'
+    id 'war'
+}
+
+group = 'com.senior.cyber.frmk.pki'
+version = '1.0.0'
+
+sourceCompatibility = '11'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":tv-dao")
+
+    implementation "com.senior.cyber.frmk:common:1.0.0"
+    implementation "com.senior.cyber.frmk:jdbc-query:1.0.0"
+
+    implementation "org.apache.wicket:wicket-auth-roles:${wicket}"
+
+    implementation "com.google.code.gson:gson:${gson}"
+    implementation "commons-io:commons-io:${commons_io}"
+    implementation "org.apache.commons:commons-lang3:${commons_lang3}"
+    implementation "org.apache.wicket:wicket-core:${wicket}"
+    implementation "org.apache.wicket:wicket-extensions:${wicket}"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.session:spring-session-jdbc"
+
+    implementation 'joda-time:joda-time:2.10.10'
+
+    implementation "org.jasypt:jasypt:1.9.3"
+
+    implementation "mysql:mysql-connector-java"
+    implementation "org.flywaydb:flyway-core"
+    implementation "org.liquibase:liquibase-core"
+}
+
+bootJar {
+    archiveBaseName = "tv-web"
+    archiveVersion = ""
+}

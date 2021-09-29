@@ -1,0 +1,30 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?><databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+    <changeSet author="Senior Cyber" id="V021__ShowTable-1">
+
+        <createTable tableName="tbl_show">
+            <column autoIncrement="true" name="show_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_43" nullable="false" primaryKey="true" primaryKeyName="primary_key_10"/>
+            </column>
+            <column name="name" type="VARCHAR(200)">
+                <constraints notNullConstraintName="notnull_key_44" nullable="false"/>
+            </column>
+            <column name="start_at" type="TIME">
+                <constraints notNullConstraintName="notnull_key_45" nullable="false"/>
+            </column>
+            <column name="duration" type="INT">
+                <constraints notNullConstraintName="notnull_key_46" nullable="false"/>
+            </column>
+            <column name="schedule" type="DATE">
+                <constraints notNullConstraintName="notnull_key_47" nullable="false"/>
+            </column>
+            <column name="channel_id" type="BIGINT">
+                <constraints notNullConstraintName="notnull_key_48" nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="index_6" tableName="tbl_show">
+            <column name="channel_id"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>
