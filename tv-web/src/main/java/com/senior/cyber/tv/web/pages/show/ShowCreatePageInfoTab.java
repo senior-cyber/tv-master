@@ -178,6 +178,7 @@ public class ShowCreatePageInfoTab extends ContentPanel {
                 saveNewButtonClick();
             }
         };
+        this.form.add(this.saveNewButton);
 
         this.cancelButton = new BookmarkablePageLink<>("cancelButton", DashboardPage.class);
         this.form.add(this.cancelButton);
