@@ -5,10 +5,7 @@ import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.StringConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.tabs.ContentPanel;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.tabs.Tab;
-import com.senior.cyber.frmk.common.wicket.layout.Size;
-import com.senior.cyber.frmk.common.wicket.layout.UIColumn;
-import com.senior.cyber.frmk.common.wicket.layout.UIContainer;
-import com.senior.cyber.frmk.common.wicket.layout.UIRow;
+import com.senior.cyber.frmk.common.wicket.layout.*;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.DateTextField;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.TimeTextField;
 import com.senior.cyber.frmk.common.wicket.markup.html.form.select2.Option;
@@ -20,6 +17,7 @@ import com.senior.cyber.tv.web.data.SingleChoiceProvider;
 import com.senior.cyber.tv.web.pages.DashboardPage;
 import com.senior.cyber.tv.web.repository.ChannelRepository;
 import com.senior.cyber.tv.web.repository.ShowRepository;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.extensions.markup.html.tabs.TabbedPanel;
@@ -232,10 +230,8 @@ public class ShowModifyPageInfoTab extends ContentPanel {
         show.setStartAt(this.start_at_value);
         show.setDuration(this.duration_value);
 
-
         showRepository.save(show);
-
-        setResponsePage(DashboardPage.class);
+        ((MasterPage) getPage()).setMessage("Saved " + DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.format(new Date()));
     }
 
     protected void deleteButtonClick() {
