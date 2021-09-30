@@ -77,6 +77,9 @@ public class ShowProvider extends FullCalendarProvider {
         List<FullCalendarItem> items = new ArrayList<>(shows.size());
         int j = colors.size();
         for (Show show : shows) {
+            if (show.getDuration() == 0) {
+                continue;
+            }
             String color = null;
             if (memory.containsKey(show.getName())) {
                 color = memory.get(show.getName());
