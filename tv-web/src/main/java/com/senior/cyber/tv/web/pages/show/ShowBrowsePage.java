@@ -1,6 +1,7 @@
 package com.senior.cyber.tv.web.pages.show;
 
 import com.senior.cyber.frmk.common.base.Bookmark;
+import com.senior.cyber.frmk.common.base.WicketFactory;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.AbstractDataTable;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.*;
@@ -13,6 +14,7 @@ import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.
 import com.senior.cyber.tv.dao.entity.Role;
 import com.senior.cyber.tv.web.data.MySqlDataProvider;
 import com.senior.cyber.tv.web.pages.MasterPage;
+import com.senior.cyber.tv.web.repository.ShowRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -25,6 +27,7 @@ import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
 import org.apache.wicket.util.convert.ConversionException;
+import org.springframework.context.ApplicationContext;
 
 import javax.persistence.Tuple;
 import java.sql.Date;
@@ -106,6 +109,7 @@ public class ShowBrowsePage extends MasterPage {
     protected List<ActionItem> show_browse_action_link(String link, Tuple model) {
         List<ActionItem> actions = new ArrayList<>(0);
         actions.add(new ActionItem("Edit", Model.of("Edit"), ItemCss.INFO));
+        actions.add(new ActionItem("Delete", Model.of("Delete"), ItemCss.DANGER));
         return actions;
     }
 
@@ -115,6 +119,11 @@ public class ShowBrowsePage extends MasterPage {
             PageParameters parameters = new PageParameters();
             parameters.add("uuid", uuid);
             setResponsePage(ShowModifyPage.class, parameters);
+        } else if ("Delete".equals(link)) {
+            ApplicationContext context = WicketFactory.getApplicationContext();
+            ShowRepository showRepository = context.getBean(ShowRepository.class);
+            showRepository.deleteById(uuid);
+            target.add(this.show_browse_table);
         }
     }
 
