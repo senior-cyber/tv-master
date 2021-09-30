@@ -156,7 +156,7 @@ public class ShowModifyPageInfoTab extends ContentPanel {
         this.duration_container = this.duration_column.newUIContainer("duration_container");
         this.duration_field = new TextField<>("duration_field", new PropertyModel<>(this, "duration_value"));
         this.duration_field.setLabel(Model.of("Duration"));
-        this.duration_field.add(RangeValidator.range(30, 240));
+        this.duration_field.add(RangeValidator.range(0, 240));
         this.duration_field.add(new ContainerFeedbackBehavior());
         this.duration_field.setRequired(true);
         this.duration_container.add(this.duration_field);
