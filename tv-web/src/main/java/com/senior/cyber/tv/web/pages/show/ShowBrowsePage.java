@@ -72,12 +72,12 @@ public class ShowBrowsePage extends MasterPage {
         }
 
         public Date convertToObject(String value, Locale locale) throws ConversionException {
-            LocalDate localDate = LocalDate.parse(value, DateTimeFormatter.ofPattern("EEE yyyy-MM-dd"));
+            LocalDate localDate = LocalDate.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd, EEEE"));
             return Date.valueOf(localDate);
         }
 
         public String convertToString(Date value, Locale locale) {
-            return DateFormatUtils.format(value, "EEE yyyy-MM-dd");
+            return DateFormatUtils.format(value, "yyyy-MM-dd, EEEE");
         }
 
         public IFilterTranslator<Date> getFilterTranslator() {
