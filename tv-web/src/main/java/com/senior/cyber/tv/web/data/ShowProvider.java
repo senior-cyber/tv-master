@@ -89,7 +89,11 @@ public class ShowProvider extends FullCalendarProvider {
             Date s = dt.toDate();
             Date e = dt.plusMinutes(show.getDuration()).toDate();
             FullCalendarItem item = new FullCalendarItem();
-            item.setTitle(show.getChannel().getName() + " - " + show.getName());
+            if (channel != null) {
+                item.setTitle(show.getName());
+            } else {
+                item.setTitle(show.getChannel().getName() + " - " + show.getName());
+            }
             item.setStart(s);
             item.setEnd(e);
             item.setAllDay(false);
