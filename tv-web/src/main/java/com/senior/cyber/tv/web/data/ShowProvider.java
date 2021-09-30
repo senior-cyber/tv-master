@@ -1,11 +1,13 @@
 package com.senior.cyber.tv.web.data;
 
-import com.senior.cyber.tv.dao.entity.Show;
-import com.senior.cyber.tv.web.pages.show.ShowModifyPage;
-import com.senior.cyber.tv.web.repository.ShowRepository;
 import com.senior.cyber.frmk.common.base.WicketFactory;
 import com.senior.cyber.frmk.common.wicket.markup.html.FullCalendarItem;
 import com.senior.cyber.frmk.common.wicket.markup.html.FullCalendarProvider;
+import com.senior.cyber.tv.dao.entity.Channel;
+import com.senior.cyber.tv.dao.entity.Show;
+import com.senior.cyber.tv.web.pages.show.ShowModifyPage;
+import com.senior.cyber.tv.web.repository.ChannelRepository;
+import com.senior.cyber.tv.web.repository.ShowRepository;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -38,14 +40,35 @@ public class ShowProvider extends FullCalendarProvider {
     private static final String GRAY = "#616161";
     private static final String BLUE_GRAY = "#455a64";
 
+    private String channelId;
+
+    public ShowProvider() {
+    }
+
+    public ShowProvider(String channelId) {
+        this.channelId = channelId;
+    }
+
     @Override
     public List<FullCalendarItem> query(Date start, Date end) {
         ApplicationContext context = WicketFactory.getApplicationContext();
         ShowRepository showRepository = context.getBean(ShowRepository.class);
+        ChannelRepository channelRepository = context.getBean(ChannelRepository.class);
 
         Map<String, String> memory = new HashMap<>();
 
-        List<Show> shows = showRepository.findByScheduleBetween(start, end);
+        Channel channel = null;
+        if (this.channelId != null && !"".equals(this.channelId)) {
+            Optional<Channel> optionalChannel = channelRepository.findById(Long.parseLong(this.channelId));
+            channel = optionalChannel.orElseThrow();
+        }
+
+        List<Show> shows = null;
+        if (channel == null) {
+            shows = showRepository.findByScheduleBetween(start, end);
+        } else {
+            shows = showRepository.findByChannelAndScheduleBetween(channel, start, end);
+        }
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss");
 
