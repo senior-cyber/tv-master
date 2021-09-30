@@ -1,8 +1,5 @@
 package com.senior.cyber.tv.web.pages.show;
 
-import com.senior.cyber.tv.dao.entity.Role;
-import com.senior.cyber.tv.web.data.MySqlDataProvider;
-import com.senior.cyber.tv.web.pages.MasterPage;
 import com.senior.cyber.frmk.common.base.Bookmark;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.AbstractDataTable;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.DataTable;
@@ -11,12 +8,16 @@ import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.LongConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.StringConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.TimeConvertor;
+import com.senior.cyber.tv.dao.entity.Role;
+import com.senior.cyber.tv.web.data.MySqlDataProvider;
+import com.senior.cyber.tv.web.pages.MasterPage;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
 import org.apache.wicket.extensions.markup.html.repeater.data.sort.SortOrder;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.IColumn;
 import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterForm;
+import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.FilterToolbar;
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
@@ -49,7 +50,7 @@ public class ShowBrowsePage extends MasterPage {
         this.show_browse_column = new ArrayList<>();
         this.show_browse_column.add(Column.normalColumn(Model.of("ID"), "uuid", "s.show_id", this.show_browse_provider, new LongConvertor()));
         this.show_browse_column.add(Column.normalColumn(Model.of("Channel"), "channel", "c.name", this.show_browse_provider, new StringConvertor()));
-        this.show_browse_column.add(Column.normalColumn(Model.of("Name"), "name", "s.name", this.show_browse_provider, new StringConvertor()));
+        this.show_browse_column.add(FilteredColumn.normalColumn(Model.of("Name"), "name", "s.name", this.show_browse_provider, new StringConvertor()));
         this.show_browse_column.add(Column.normalColumn(Model.of("Schedule"), "schedule", "s.schedule", this.show_browse_provider, new DateConvertor()));
         this.show_browse_column.add(Column.normalColumn(Model.of("Start At"), "start_at", "s.start_at", this.show_browse_provider, new TimeConvertor()));
         this.show_browse_column.add(Column.normalColumn(Model.of("Duration"), "duration", "s.duration", this.show_browse_provider, new LongConvertor()));
@@ -64,8 +65,8 @@ public class ShowBrowsePage extends MasterPage {
         this.show_browse_form = new FilterForm<>("show_browse_form", this.show_browse_provider);
         body.add(this.show_browse_form);
 
-        this.show_browse_table = new DataTable<>("show_browse_table", this.show_browse_column,
-                this.show_browse_provider, 20);
+        this.show_browse_table = new DataTable<>("show_browse_table", this.show_browse_column, this.show_browse_provider, 20);
+        this.show_browse_table.addTopToolbar(new FilterToolbar(this.show_browse_table, this.show_browse_form));
         this.show_browse_form.add(this.show_browse_table);
     }
 
