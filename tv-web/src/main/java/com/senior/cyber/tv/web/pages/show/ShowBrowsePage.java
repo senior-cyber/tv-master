@@ -49,7 +49,7 @@ public class ShowBrowsePage extends MasterPage {
 
         this.show_browse_column = new ArrayList<>();
         this.show_browse_column.add(Column.normalColumn(Model.of("ID"), "uuid", "s.show_id", this.show_browse_provider, new LongConvertor()));
-        this.show_browse_column.add(Column.normalColumn(Model.of("Channel"), "channel", "c.name", this.show_browse_provider, new StringConvertor()));
+        this.show_browse_column.add(FilteredColumn.normalColumn(Model.of("Channel"), "channel", "c.name", this.show_browse_provider, new StringConvertor()));
         this.show_browse_column.add(FilteredColumn.normalColumn(Model.of("Name"), "name", "s.name", this.show_browse_provider, new StringConvertor()));
         this.show_browse_column.add(Column.normalColumn(Model.of("Schedule"), "schedule", "s.schedule", this.show_browse_provider, new DateConvertor()));
         this.show_browse_column.add(Column.normalColumn(Model.of("Start At"), "start_at", "s.start_at", this.show_browse_provider, new TimeConvertor()));
