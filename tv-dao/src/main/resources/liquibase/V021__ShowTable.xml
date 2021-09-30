@@ -28,6 +28,12 @@
         <createIndex tableName="tbl_show" indexName="">
             <column name="channel_id"/>
         </createIndex>
+        <createIndex tableName="tbl_show" indexName="">
+            <column name="name"/>
+        </createIndex>
+        <createIndex tableName="tbl_show" indexName="">
+            <column name="schedule"/>
+        </createIndex>
 
     </changeSet>
 </databaseChangeLog>
