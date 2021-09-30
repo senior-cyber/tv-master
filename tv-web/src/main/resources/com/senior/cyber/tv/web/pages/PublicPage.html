@@ -6,7 +6,28 @@
     <title>TV Master</title>
 </head>
 <body>
-
+<div class="card card-info">
+    <form wicket:id="form">
+        <div class="card-body">
+            <div wicket:id="row1">
+                <div wicket:id="channel_column">
+                    <wicket:container wicket:id="channel_container">
+                        <div class="form-group">
+                            <label wicket:for="channel_field">Channel</label>
+                            <select wicket:id="channel_field" class="form-control"></select>
+                            <span wicket:id="channel_feedback"/>
+                        </div>
+                    </wicket:container>
+                </div>
+                <div wicket:id="last_column"/>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button wicket:id="filterButton" type="submit" class="btn btn-info">Filter</button>
+            <a wicket:id="cancelButton" class="btn btn-default float-right">Cancel</a>
+        </div>
+    </form>
+</div>
 <div class="card card-info">
     <div class="card-body p-0">
         <div wicket:id="calendar"></div>
