@@ -4,13 +4,16 @@ import com.senior.cyber.frmk.common.base.Bookmark;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.AbstractDataTable;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.DataTable;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.*;
-import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.DateConvertor;
+import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.Convertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.LongConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.StringConvertor;
 import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.filter.convertor.TimeConvertor;
+import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.translator.IFilterTranslator;
+import com.senior.cyber.frmk.common.wicket.extensions.markup.html.repeater.data.table.translator.filter.jdbc.FilterDateTranslator;
 import com.senior.cyber.tv.dao.entity.Role;
 import com.senior.cyber.tv.web.data.MySqlDataProvider;
 import com.senior.cyber.tv.web.pages.MasterPage;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.authroles.authorization.strategies.role.annotations.AuthorizeInstantiation;
@@ -21,10 +24,15 @@ import org.apache.wicket.extensions.markup.html.repeater.data.table.filter.Filte
 import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.convert.ConversionException;
 
 import javax.persistence.Tuple;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Bookmark("/show/browse")
@@ -56,6 +64,31 @@ public class ShowBrowsePage extends MasterPage {
         this.show_browse_column.add(Column.normalColumn(Model.of("Duration"), "duration", "s.duration", this.show_browse_provider, new LongConvertor()));
         this.show_browse_column.add(new ActionFilteredColumn<>(Model.of("Action"), this::show_browse_action_link, this::show_browse_action_click));
     }
+
+    public static class DateConvertor implements Convertor<Date> {
+        protected FilterDateTranslator translator = new FilterDateTranslator();
+
+        public DateConvertor() {
+        }
+
+        public Date convertToObject(String value, Locale locale) throws ConversionException {
+            LocalDate localDate = LocalDate.parse(value, DateTimeFormatter.ofPattern("EEE yyyy-MM-dd"));
+            return Date.valueOf(localDate);
+        }
+
+        public String convertToString(Date value, Locale locale) {
+            return DateFormatUtils.format(value, "EEE yyyy-MM-dd");
+        }
+
+        public IFilterTranslator<Date> getFilterTranslator() {
+            return this.translator;
+        }
+
+        public Class<Date> getType() {
+            return Date.class;
+        }
+    }
+
 
     @Override
     protected void onInitHtml(MarkupContainer body) {
