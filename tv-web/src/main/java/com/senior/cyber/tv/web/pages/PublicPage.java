@@ -97,7 +97,6 @@ public class PublicPage extends WebPage {
         this.cancelButton = new BookmarkablePageLink<>("cancelButton", PublicPage.class);
         this.form.add(this.cancelButton);
 
-        this.calendar_provider = new ShowProvider();
         this.calendar_field = new FullCalendar("calendar", this.calendar_provider);
         add(this.calendar_field);
     }
