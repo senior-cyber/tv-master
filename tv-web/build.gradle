@@ -32,9 +32,9 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     implementation "org.springframework.session:spring-session-jdbc"
 
-    implementation 'joda-time:joda-time:2.10.10'
+    implementation "joda-time:joda-time:${joda_time}"
 
-    implementation "org.jasypt:jasypt:1.9.3"
+    implementation "org.jasypt:jasypt:${jasypt}"
 
     implementation "mysql:mysql-connector-java"
     implementation "org.flywaydb:flyway-core"
