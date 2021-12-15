@@ -1,11 +1,11 @@
 package com.senior.cyber.tv.web;
 
 import com.senior.cyber.frmk.common.base.WicketFactory;
-import com.senior.cyber.frmk.common.function.BootExtension;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.jasypt.util.password.PasswordEncryptor;
 import org.jasypt.util.password.StrongPasswordEncryptor;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -19,7 +19,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 public class BootApplication {
 
     public static void main(String[] args) throws Exception {
-        BootExtension.run(BootApplication.class, args);
+        SpringApplication.run(BootApplication.class, args);
     }
 
     public static ApplicationContext getApplicationContext() {
