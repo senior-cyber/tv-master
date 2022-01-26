@@ -1,7 +1,7 @@
 buildscript {
     ext {
         // Nexus Repository Configuration
-        nexus_url = 'http://192.168.1.24:8081/repository'
+        nexus_url = 'https://192.168.1.24:8443/repository'
         nexus_uid = 'admin'
         nexus_pwd = 'password'
 
